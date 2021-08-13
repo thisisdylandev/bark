@@ -63,4 +63,4 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Using pagy for pagination
-gem 'pagy'
+gem 'pagy', '~> 3.5'
