@@ -19,6 +19,9 @@ class DogsController < ApplicationController
 
   # GET /dogs/1/edit
   def edit
+    if @dog.user != current_user
+      redirect_to @dog, notice: 'Only the owner can edit a dog!' 
+    end
   end
 
   # POST /dogs
