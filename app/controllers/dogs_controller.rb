@@ -4,7 +4,11 @@ class DogsController < ApplicationController
   # GET /dogs
   # GET /dogs.json
   def index
-    @pagy, @dogs = pagy(Dog.all, items: 5)
+    if params[:sort]
+      @pagy, @dogs = pagy(Dog.order(likes: :desc), items: 5)
+    else
+      @pagy, @dogs = pagy(Dog.all, items: 5)
+    end
   end
 
   # GET /dogs/1
@@ -71,7 +75,7 @@ class DogsController < ApplicationController
     if @dog.user != current_user
       @dog.likes += 1
       if @dog.save
-        redirect_to @dog, notice: 'You liked #{@dog.name}.'
+        redirect_to @dog, notice: "You liked #{@dog.name}."
       else
        render :edit, notice: 'Something went wrong! Contact an Admin'
       end

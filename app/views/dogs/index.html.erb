@@ -1,3 +1,5 @@
+<%= link_to "Sort By Likes", :sort => "likes" %>
+
 <%= render partial: 'thumbnail', collection: @dogs, as: :dog %>
 
 <%== pagy_nav(@pagy) %>
