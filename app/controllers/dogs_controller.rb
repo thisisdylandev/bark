@@ -1,5 +1,5 @@
 class DogsController < ApplicationController
-  before_action :set_dog, only: [:show, :edit, :update, :destroy]
+  before_action :set_dog, only: [:show, :edit, :update, :destroy, :like]
 
   # GET /dogs
   # GET /dogs.json
@@ -30,6 +30,7 @@ class DogsController < ApplicationController
     @dog = Dog.new(dog_params)
 
     @dog.user = current_user
+    @dog.likes = 0
 
     respond_to do |format|
       if @dog.save
@@ -47,6 +48,10 @@ class DogsController < ApplicationController
   # PATCH/PUT /dogs/1
   # PATCH/PUT /dogs/1.json
   def update
+    if @dog.user != current_user
+      redirect_to @dog, notice: 'Only the owner can edit a dog!' 
+    end
+
     respond_to do |format|
       if @dog.update(dog_params)
         @dog.images.attach(params[:dog][:image]) if params[:dog][:image].present?
@@ -56,6 +61,19 @@ class DogsController < ApplicationController
       else
         format.html { render :edit }
         format.json { render json: @dog.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # POST /dogs/1
+  # POST /dogs/1.json
+  def like
+    if @dog.user != current_user
+      @dog.likes += 1
+      if @dog.save
+        redirect_to @dog, notice: 'You liked #{@dog.name}.'
+      else
+       render :edit, notice: 'Something went wrong! Contact an Admin'
       end
     end
   end

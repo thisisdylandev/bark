@@ -55,7 +55,7 @@ user.password = '#$taawktljasktlw4aaglj'
 user.save!
 
 dogs.each do |dog|
-  dog = Dog.find_or_create_by(name: dog[:name], description: dog[:description], user: user)
+  dog = Dog.find_or_create_by(name: dog[:name], description: dog[:description], user: user, likes: 0)
   directory_name = File.join(Rails.root, 'db', 'seed', "#{dog[:name].downcase}", "*")
 
   Dir.glob(directory_name).each do |filename|

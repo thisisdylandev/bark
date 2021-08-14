@@ -6,6 +6,11 @@
   <% end %>
 
   <p><%= @dog.description %></p>
+  <p>Likes: <%= @dog.likes %></p>
+
+  <% if @dog.user != current_user %>
+    <%= button_to "Like", :method=>"like" %>
+  <% end %>
 
   <%= link_to "Edit #{@dog.name}'s Profile", edit_dog_path %>
   <br>
